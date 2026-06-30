@@ -198,6 +198,7 @@ def main(args, design_run: bool = False) -> None:
             chains=args.parse_these_chains_only,
             parse_all_atoms=parse_all_atoms_flag,
             parse_atoms_with_zero_occupancy=args.parse_atoms_with_zero_occupancy,
+            parse_ptms=args.parse_ptms,
         )
         # make chain_letter + residue_idx + insertion_code mapping to integers
         R_idx_list = list(protein_dict["R_idx"].cpu().numpy())  # residue indices
@@ -928,7 +929,12 @@ if __name__ == "__main__":
         default=0,
         help="To parse atoms with zero occupancy in the PDB input files. 0 - do not parse, 1 - parse atoms with zero occupancy",
     )
-
+    argparser.add_argument(
+        "--parse_ptms",
+        type=int,
+        default=0,
+        help="1 - select 'hetatm and not water' atoms as ligand context (for PTM residues on a protein chain), 0 - default behavior",
+    )
     argparser.add_argument(
         "--pack_side_chains",
         type=int,
